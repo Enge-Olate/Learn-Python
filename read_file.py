@@ -1,4 +1,4 @@
-file = './ListadePrecosNovatec-NOVEMBRO2025.csv'
+file = './listaLivrosInformatica.csv'
 conteudo = []
 try:
     with open(file=file, encoding='utf-8',mode='r') as file:

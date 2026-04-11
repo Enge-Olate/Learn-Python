@@ -1,5 +1,5 @@
 import csv
-file = './ListadePrecosNovatec-NOVEMBRO2025.csv'
+file = './listaLivrosInformatica.csv'
 prices = []
 try:
     with open(file=file, encoding='utf-8', mode='r') as file:
