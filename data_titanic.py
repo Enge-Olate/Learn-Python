@@ -15,11 +15,21 @@ df.info()
 df.head()
 df.isna().sum()
 
-def get_filters():
-    df[df["Survived"] == 1]
-    df[(df["Sex"] == "female")& (df["Pclass"] == 1)]
-    df[(df["Sex"] == 'male') & (df["Fare"] > 20.000)]
-    
+
+def apply_filters(df, survived=None, sex=None, pclass=None, min_fare=None):
+
+    if survived is not None:
+        df = df[df["Survived"] == survived]
+
+    if sex:
+        df = df[df["Sex"] == sex]
+
+    if pclass:
+        df = df[df["Pclass"] == pclass]
+
+    if min_fare:
+        df = df[df["Fare"] > min_fare]
+
     return df
 
 def clean_data():
@@ -48,7 +58,16 @@ def analyses():
     )
     
     return survive, survive_per_class
-    
+
+
+def export_json(file):
+    json_data = file.to_json(
+        orient="records",
+        force_ascii=False
+    )
+    return json_data
+
+
 
 clean_data()    
 menor = is_child()
@@ -58,3 +77,19 @@ print(etarism)
 print("="*50)
 survives = analyses()
 print(survives)
+print("="*50)
+
+
+from flask import Flask, jsonify
+app = Flask(__name__)
+
+@app.route("/passengers", methods=["GET"])
+def get_passengers():
+    api_df = df[
+    ["PassengerId", "Survived", "Pclass", "Name", "Sex", "Age", "Fare", "Embarked"]
+]
+    data = export_json(api_df)    
+    return jsonify(data)
+    
+if __name__ == '__main__':
+    app.run()
